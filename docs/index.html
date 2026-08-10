@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Living Clone - Documentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #0a0a1a;
+            --card: #12122a;
+            --accent: #e94560;
+            --accent2: #0f3460;
+            --text: #eaeaea;
+            --muted: #888;
+            --green: #00c853;
+            --yellow: #ffd600;
+            --blue: #2979ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0f3460 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 100px 20px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 4em;
+            background: linear-gradient(135deg, var(--accent), #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease;
+            margin-bottom: 20px;
+        }
+
+        .header .tagline {
+            font-size: 1.5em;
+            color: var(--muted);
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .header .version {
+            display: inline-block;
+            background: var(--accent);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 20px;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Navigation */
+        .nav {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--accent2);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            padding: 0 20px;
+        }
+
+        .nav a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: all 0.3s;
+            padding: 5px 15px;
+            border-radius: 5px;
+        }
+
+        .nav a:hover, .nav a.active {
+            color: var(--accent);
+            background: rgba(233, 69, 96, 0.1);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Section */
+        .section {
+            padding: 80px 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            color: var(--accent);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        /* Cards Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid var(--accent2);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--blue));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(233, 69, 96, 0.2);
+            border-color: var(--accent);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            color: var(--text);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .card p {
+            color: var(--muted);
+            font-size: 0.95em;
+        }
+
+        /* Vulnerability Cards */
+        .vuln-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .vuln-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 4px solid;
+            transition: all 0.3s;
+        }
+
+        .vuln-card.critical { border-color: #d50000; }
+        .vuln-card.high { border-color: #ff6d00; }
+        .vuln-card.medium { border-color: #ffd600; }
+        .vuln-card.low { border-color: #00c853; }
+
+        .vuln-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .severity {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .severity.critical { background: #d50000; color: #fff; }
+        .severity.high { background: #ff6d00; color: #fff; }
+        .severity.medium { background: #ffd600; color: #000; }
+
+        /* Code Block */
+        .code-block {
+            background: #0d0d0d;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: attr(data-title);
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--accent);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 0 10px 0 10px;
+            font-size: 0.8em;
+        }
+
+        .code-block code {
+            color: #00ff00;
+        }
+
+        .code-block .comment { color: #666; }
+        .code-block .string { color: #ff6b6b; }
+        .code-block .keyword { color: #00c853; }
+        .code-block .function { color: #2979ff; }
+
+        /* Terminal Animation */
+        .terminal {
+            background: #0d0d0d;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Consolas', monospace;
+            min-height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            background: #1a1a1a;
+            padding: 10px 15px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27ca3f; }
+
+        .terminal-content {
+            color: #00ff00;
+            line-height: 1.8;
+        }
+
+        .terminal-line {
+            opacity: 0;
+            animation: typeLine 0.5s ease forwards;
+        }
+
+        .terminal-line:nth-child(1) { animation-delay: 0.5s; }
+        .terminal-line:nth-child(2) { animation-delay: 1s; }
+        .terminal-line:nth-child(3) { animation-delay: 1.5s; }
+        .terminal-line:nth-child(4) { animation-delay: 2s; }
+        .terminal-line:nth-child(5) { animation-delay: 2.5s; }
+        .terminal-line:nth-child(6) { animation-delay: 3s; }
+
+        @keyframes typeLine {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #00ff00;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Flow Diagram */
+        .flow-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .flow-step {
+            background: var(--card);
+            border: 2px solid var(--accent2);
+            border-radius: 10px;
+            padding: 20px 30px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .flow-step:hover {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .flow-step .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .flow-arrow {
+            font-size: 2em;
+            color: var(--accent);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Features List */
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--accent2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+
+        .features-list li:hover {
+            padding-left: 20px;
+            background: rgba(233, 69, 96, 0.05);
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: var(--green);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 30px;
+            background: var(--card);
+            border-radius: 15px;
+            border: 1px solid var(--accent2);
+        }
+
+        .stat .number {
+            font-size: 3em;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .stat .label {
+            color: var(--muted);
+            margin-top: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            border-top: 1px solid var(--accent2);
+            margin-top: 80px;
+        }
+
+        .footer p {
+            color: var(--muted);
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5em; }
+            .grid { grid-template-columns: 1fr; }
+            .flow-diagram { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+        }
+
+        /* Scroll animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glow effect */
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(233, 69, 96, 0.3); }
+            to { box-shadow: 0 0 40px rgba(233, 69, 96, 0.6); }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <h1>Living Clone</h1>
+        <p class="tagline">Advanced Website Cloning & Security Testing Tool</p>
+        <span class="version">v2.0.0</span>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#features">Features</a>
+            <a href="#vulnerabilities">Vulnerabilities</a>
+            <a href="#installation">Installation</a>
+            <a href="#usage">Usage</a>
+            <a href="#demo">Demo</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#commands">Commands</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- Stats -->
+        <section class="section" id="stats">
+            <div class="stats">
+                <div class="stat">
+                    <div class="number">12+</div>
+                    <div class="label">Vulnerability Types</div>
+                </div>
+                <div class="stat">
+                    <div class="number">16</div>
+                    <div class="label">Modules</div>
+                </div>
+                <div class="stat">
+                    <div class="number">3</div>
+                    <div class="label">Platforms</div>
+                </div>
+                <div class="stat">
+                    <div class="number">20+</div>
+                    <div class="label">Commands</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="section" id="features">
+            <h2 class="section-title">Features</h2>
+            <div class="grid">
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">🕷️</div>
+                    <h3>Deep Crawling</h3>
+                    <p>Crawl entire websites with configurable depth, page limits, and parallel processing. Resume interrupted crawls.</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">💉</div>
+                    <h3>XSS Injection</h3>
+                    <p>Inject custom JavaScript payloads into cloned pages for testing. Multiple payload types included.</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">🌐</div>
+                    <h3>Browser Automation</h3>
+                    <p>Puppeteer-based cloning for SPAs (React, Vue, Angular). Headless Chrome, device emulation.</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">🛡️</div>
+                    <h3>WAF Detection</h3>
+                    <p>Identify Cloudflare, Akamai, AWS WAF, and 15+ other WAFs protecting the target.</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">🔍</div>
+                    <h3>Tech Fingerprinting</h3>
+                    <p>Detect CMS, frameworks, server software, and technologies used by the target.</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">📊</div>
+                    <h3>Security Reports</h3>
+                    <p>Beautiful HTML, PDF, JSON, Markdown reports with multiple themes (Dark, Light, Hacker, Cyberpunk).</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">🔄</div>
+                    <h3>Session Management</h3>
+                    <p>Save and restore cookies, localStorage, sessionStorage. Export as JSON, Netscape, or cURL.</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">🚀</div>
+                    <h3>REST API</h3>
+                    <p>Programmatic access to all features. Integrate with your tools and workflows.</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">📡</div>
+                    <h3>Webhook Notifications</h3>
+                    <p>Send alerts to Slack, Discord, or custom webhooks when changes are detected.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vulnerabilities -->
+        <section class="section" id="vulnerabilities">
+            <h2 class="section-title">Vulnerability Detection</h2>
+            <div class="vuln-grid">
+                <div class="vuln-card critical animate-on-scroll">
+                    <span class="severity critical">CRITICAL</span>
+                    <h3>SQL Injection</h3>
+                    <p>Detect SQL injection patterns including UNION-based, error-based, and blind injection.</p>
+                </div>
+                <div class="vuln-card critical animate-on-scroll">
+                    <span class="severity critical">CRITICAL</span>
+                    <h3>Command Injection</h3>
+                    <p>Find OS command injection vulnerabilities in application inputs.</p>
+                </div>
+                <div class="vuln-card critical animate-on-scroll">
+                    <span class="severity critical">CRITICAL</span>
+                    <h3>XXE (XML External Entity)</h3>
+                    <p>Detect XML parsing vulnerabilities that could lead to file disclosure or SSRF.</p>
+                </div>
+                <div class="vuln-card critical animate-on-scroll">
+                    <span class="severity critical">CRITICAL</span>
+                    <h3>SSRF (Server-Side Request Forgery)</h3>
+                    <p>Identify endpoints that could be abused to make requests to internal services.</p>
+                </div>
+                <div class="vuln-card critical animate-on-scroll">
+                    <span class="severity critical">CRITICAL</span>
+                    <h3>Path Traversal</h3>
+                    <p>Detect directory traversal vulnerabilities that could expose sensitive files.</p>
+                </div>
+                <div class="vuln-card critical animate-on-scroll">
+                    <span class="severity critical">CRITICAL</span>
+                    <h3>Insecure Deserialization</h3>
+                    <p>Find unsafe deserialization patterns that could lead to remote code execution.</p>
+                </div>
+                <div class="vuln-card critical animate-on-scroll">
+                    <span class="severity critical">CRITICAL</span>
+                    <h3>Local File Inclusion (LFI)</h3>
+                    <p>Detect file inclusion vulnerabilities that could expose system files.</p>
+                </div>
+                <div class="vuln-card high animate-on-scroll">
+                    <span class="severity high">HIGH</span>
+                    <h3>XSS (Cross-Site Scripting)</h3>
+                    <p>Find reflected, stored, and DOM-based XSS vulnerabilities.</p>
+                </div>
+                <div class="vuln-card high animate-on-scroll">
+                    <span class="severity high">HIGH</span>
+                    <h3>CSRF (Cross-Site Request Forgery)</h3>
+                    <p>Detect missing CSRF protection on state-changing operations.</p>
+                </div>
+                <div class="vuln-card high animate-on-scroll">
+                    <span class="severity high">HIGH</span>
+                    <h3>Server-Side Includes (SSI)</h3>
+                    <p>Find SSI injection vulnerabilities in web applications.</p>
+                </div>
+                <div class="vuln-card high animate-on-scroll">
+                    <span class="severity high">HIGH</span>
+                    <h3>Template Injection (SSTI)</h3>
+                    <p>Detect server-side template injection in various templating engines.</p>
+                </div>
+                <div class="vuln-card medium animate-on-scroll">
+                    <span class="severity medium">MEDIUM</span>
+                    <h3>Open Redirect</h3>
+                    <p>Find open redirect vulnerabilities that could be used for phishing attacks.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Installation -->
+        <section class="section" id="installation">
+            <h2 class="section-title">Installation</h2>
+            
+            <div class="code-block" data-title="Windows">
+                <code>
+<span class="comment"># Clone the repository</span>
+git clone https://github.com/jojin1709/live-clone-tool.git
+
+<span class="comment"># Navigate to directory</span>
+cd live-clone-tool
+
+<span class="comment"># Install dependencies</span>
+npm install
+
+<span class="comment"># Run the tool</span>
+node clone.js --help
+                </code>
+            </div>
+
+            <div class="code-block" data-title="Linux (Kali/Ubuntu)">
+                <code>
+<span class="comment"># Clone the repository</span>
+git clone https://github.com/jojin1709/live-clone-tool.git
+
+<span class="comment"># Navigate to directory</span>
+cd live-clone-tool
+
+<span class="comment"># Make executable</span>
+chmod +x clone.js
+
+<span class="comment"># Install dependencies</span>
+npm install
+
+<span class="comment"># Run the tool</span>
+./clone.js --help
+                </code>
+            </div>
+
+            <h3 style="margin-top: 40px; margin-bottom: 20px;">Prerequisites</h3>
+            <ul class="features-list">
+                <li>Node.js 16 or higher</li>
+                <li>Git (optional)</li>
+                <li>Puppeteer (optional - for browser automation)</li>
+            </ul>
+        </section>
+
+        <!-- Usage -->
+        <section class="section" id="usage">
+            <h2 class="section-title">Usage</h2>
+
+            <h3>Basic Cloning</h3>
+            <div class="code-block" data-title="Command">
+                <code>
+<span class="comment"># Clone a website</span>
+node clone.js clone https://example.com
+
+<span class="comment"># Clone with custom injection</span>
+node clone.js clone https://example.com -j "alert('XSS')"
+
+<span class="comment"># Clone with pre-built payload</span>
+node clone.js clone https://example.js -f payloads/xss-default.js
+
+<span class="comment"># Deep crawl</span>
+node clone.js clone https://example.com -d 5 --max-pages 500
+                </code>
+            </div>
+
+            <h3 style="margin-top: 40px;">Security Scanning</h3>
+            <div class="code-block" data-title="Command">
+                <code>
+<span class="comment"># Run security scan</span>
+node clone.js security https://example.com
+
+<span class="comment"># Save report</span>
+node clone.js security https://example.js --output report.html
+                </code>
+            </div>
+
+            <h3 style="margin-top: 40px;">Browser Automation (SPA)</h3>
+            <div class="code-block" data-title="Command">
+                <code>
+<span class="comment"># Clone React/Vue/Angular app</span>
+node clone.js browser https://spa.example.com --wait 5000 --scroll
+
+<span class="comment"># With device emulation</span>
+node clone.js browser https://example.com --emulate "iPhone 12"
+                </code>
+            </div>
+
+            <h3 style="margin-top: 40px;">Batch Operations</h3>
+            <div class="code-block" data-title="Command">
+                <code>
+<span class="comment"># Create URL file</span>
+echo "https://example.com
+https://test.com
+https://demo.com" > urls.txt
+
+<span class="comment"># Batch clone</span>
+node clone.js batch urls.txt -c 5 --delay 2000
+                </code>
+            </div>
+
+            <h3 style="margin-top: 40px;">Web Dashboard</h3>
+            <div class="code-block" data-title="Command">
+                <code>
+<span class="comment"># Start dashboard</span>
+node clone.js dashboard -p 9090
+
+<span class="comment"># Open http://localhost:9090</span>
+                </code>
+            </div>
+        </section>
+
+        <!-- Demo -->
+        <section class="section" id="demo">
+            <h2 class="section-title">Live Demo</h2>
+            
+            <div class="terminal glow">
+                <div class="terminal-header">
+                    <div class="terminal-dot red"></div>
+                    <div class="terminal-dot yellow"></div>
+                    <div class="terminal-dot green"></div>
+                </div>
+                <div class="terminal-content">
+                    <div class="terminal-line">$ <span class="keyword">node</span> clone.js security https://example.com</div>
+                    <div class="terminal-line"></div>
+                    <div class="terminal-line">  Security Scanner</div>
+                    <div class="terminal-line"></div>
+                    <div class="terminal-line">  WAF: <span style="color: #ffd600;">Cloudflare</span></div>
+                    <div class="terminal-line">  Technologies: <span style="color: #2979ff;">Nginx, jQuery</span></div>
+                    <div class="terminal-line">  Vulnerabilities: <span style="color: #ff6d00;">3</span></div>
+                    <div class="terminal-line">  Score: <span style="color: #00c853;">75/100</span></div>
+                    <div class="terminal-line"></div>
+                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> Security headers analysis complete</div>
+                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> WAF detection complete</div>
+                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> Vulnerability scan complete</div>
+                    <div class="terminal-line"></div>
+                    <div class="terminal-line">$ <span class="cursor"></span></div>
+                </div>
+            </div>
+
+            <div class="terminal glow" style="margin-top: 30px;">
+                <div class="terminal-header">
+                    <div class="terminal-dot red"></div>
+                    <div class="terminal-dot yellow"></div>
+                    <div class="terminal-dot green"></div>
+                </div>
+                <div class="terminal-content">
+                    <div class="terminal-line">$ <span class="keyword">node</span> clone.js clone https://example.com -o my-clone --export-html --export-pdf</div>
+                    <div class="terminal-line"></div>
+                    <div class="terminal-line">  Living Clone v2.0 - Advanced Security Testing Tool</div>
+                    <div class="terminal-line"></div>
+                    <div class="terminal-line">  Cloning: https://example.com</div>
+                    <div class="terminal-line">  Output: D:\living-clone\my-clone</div>
+                    <div class="terminal-line">  Depth: 1</div>
+                    <div class="terminal-line"></div>
+                    <div class="terminal-line">  Starting crawl...</div>
+                    <div class="terminal-line"></div>
+                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> Crawl completed! Found 1 pages</div>
+                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> Site cloned in 0.35s</div>
+                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> HTML report exported</div>
+                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> PDF exported</div>
+                    <div class="terminal-line"></div>
+                    <div class="terminal-line">  Server running at: <span style="color: #2979ff;">http://localhost:8080</span></div>
+                    <div class="terminal-line">$ <span class="cursor"></span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="section" id="how-it-works">
+            <h2 class="section-title">How It Works</h2>
+
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="icon">🎯</div>
+                    <div>Target URL</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="icon">🕷️</div>
+                    <div>Crawler</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="icon">🔍</div>
+                    <div>Analyzer</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="icon">🛡️</div>
+                    <div>Security Scan</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="icon">💉</div>
+                    <div>Injection</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="icon">📊</div>
+                    <div>Report</div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 60px;">Architecture</h3>
+            <div class="grid">
+                <div class="card animate-on-scroll">
+                    <h3>1. Pre-Reconnaissance</h3>
+                    <p>Analyzes target, detects WAF, identifies technologies and frameworks.</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <h3>2. Crawling</h3>
+                    <p>Deep crawls the website with configurable depth, parallel processing, and caching.</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <h3>3. Security Analysis</h3>
+                    <p>Scans for 12+ vulnerability types including XSS, SQLi, CSRF, XXE, SSRF, and more.</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <h3>4. Injection</h3>
+                    <p>Injects custom JavaScript payloads into cloned pages for testing.</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <h3>5. Reporting</h3>
+                    <p>Generates beautiful reports in HTML, PDF, JSON, or Markdown format.</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <h3>6. Serving</h3>
+                    <p>Hosts the cloned site locally for safe testing and analysis.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Commands -->
+        <section class="section" id="commands">
+            <h2 class="section-title">All Commands</h2>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                    <thead>
+                        <tr style="background: var(--accent2);">
+                            <th style="padding: 15px; text-align: left; color: var(--accent);">Command</th>
+                            <th style="padding: 15px; text-align: left; color: var(--accent);">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>clone &lt;url&gt;</code></td><td style="padding: 12px;">Clone a website with injection</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>security &lt;url&gt;</code></td><td style="padding: 12px;">Run security scan</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>browser &lt;url&gt;</code></td><td style="padding: 12px;">Clone with Puppeteer (SPA support)</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>batch &lt;file&gt;</code></td><td style="padding: 12px;">Batch clone from URL file</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>watch &lt;urls&gt;</code></td><td style="padding: 12px;">Monitor URLs for changes</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>compare &lt;dir1&gt; &lt;dir2&gt;</code></td><td style="padding: 12px;">Compare two clones</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>serve [folder]</code></td><td style="padding: 12px;">Serve a cloned site</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>session</code></td><td style="padding: 12px;">Manage sessions</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>export &lt;folder&gt;</code></td><td style="padding: 12px;">Export clone data</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>api</code></td><td style="padding: 12px;">Start REST API server</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>dashboard</code></td><td style="padding: 12px;">Start web dashboard</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>config</code></td><td style="padding: 12px;">Manage configuration</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>payloads</code></td><td style="padding: 12px;">List available payloads</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>themes</code></td><td style="padding: 12px;">List report themes</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>har</code></td><td style="padding: 12px;">Export/Import HAR files</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>webhook</code></td><td style="padding: 12px;">Send notifications</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>integrations</code></td><td style="padding: 12px;">Manage integrations</td></tr>
+                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>crawl-state</code></td><td style="padding: 12px;">Manage crawl state for resume</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Developed by <a href="https://github.com/jojin1709">JOJIN JOHN</a></p>
+            <p style="margin-top: 10px;">GitHub: <a href="https://github.com/jojin1709/live-clone-tool">github.com/jojin1709/live-clone-tool</a></p>
+            <p style="margin-top: 20px; color: var(--accent);">For educational and authorized security testing only.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.section, .animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Active nav link
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Counter animation
+        const counters = document.querySelectorAll('.number');
+        const animateCounter = (counter) => {
+            const target = parseInt(counter.textContent);
+            const increment = target / 50;
+            let current = 0;
+            const updateCounter = () => {
+                if (current < target) {
+                    counter.textContent = current + '+';
+                    current += increment;
+                    setTimeout(updateCounter, 30);
+                } else {
+                    counter.textContent = target + '+';
+                }
+            };
+            updateCounter();
+        };
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(counter => counterObserver.observe(counter));
+    </script>
+</body>
+</html>
