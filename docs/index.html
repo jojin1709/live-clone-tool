@@ -4,111 +4,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Living Clone - Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg: #0a0a1a;
-            --card: #12122a;
-            --accent: #e94560;
-            --accent2: #0f3460;
-            --text: #eaeaea;
-            --muted: #888;
-            --green: #00c853;
-            --yellow: #ffd600;
-            --blue: #2979ff;
+            --bg-primary: #09090b;
+            --bg-secondary: #18181b;
+            --bg-tertiary: #27272a;
+            --border: #3f3f46;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent: #f43f5e;
+            --accent-glow: rgba(244, 63, 94, 0.4);
+            --green: #22c55e;
+            --yellow: #eab308;
+            --blue: #3b82f6;
+            --purple: #a855f7;
+            --cyan: #06b6d4;
         }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Animated Background */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0f3460 100%);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Floating particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
             overflow: hidden;
         }
 
-        .particle {
+        .hero::before {
+            content: '';
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 50%;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
             opacity: 0.3;
-            animation: float 20s infinite;
+            animation: heroGlow 8s ease-in-out infinite alternate;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        @keyframes heroGlow {
+            from { transform: translateX(-50%) scale(1); }
+            to { transform: translateX(-50%) scale(1.2); }
         }
 
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 100px 20px;
-            position: relative;
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            animation: fadeIn 0.8s ease;
         }
 
-        .header h1 {
-            font-size: 4em;
-            background: linear-gradient(135deg, var(--accent), #ff6b6b);
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            animation: fadeIn 0.8s ease 0.1s both;
+        }
+
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, var(--accent), var(--purple), var(--cyan));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: fadeInUp 1s ease;
-            margin-bottom: 20px;
         }
 
-        .header .tagline {
-            font-size: 1.5em;
-            color: var(--muted);
-            animation: fadeInUp 1s ease 0.2s both;
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 48px;
+            animation: fadeIn 0.8s ease 0.2s both;
         }
 
-        .header .version {
-            display: inline-block;
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeIn 0.8s ease 0.3s both;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
             background: var(--accent);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            margin-top: 20px;
-            animation: fadeInUp 1s ease 0.4s both;
+            color: white;
+            box-shadow: 0 0 20px var(--accent-glow);
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--text-muted);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -116,209 +170,264 @@
         .nav {
             position: sticky;
             top: 0;
-            background: rgba(10, 10, 26, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
             z-index: 1000;
-            border-bottom: 1px solid var(--accent2);
+            background: rgba(9, 9, 11, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
         }
 
         .nav-inner {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 16px 24px;
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 8px;
             flex-wrap: wrap;
-            padding: 0 20px;
         }
 
         .nav a {
-            color: var(--muted);
+            color: var(--text-secondary);
             text-decoration: none;
-            transition: all 0.3s;
-            padding: 5px 15px;
-            border-radius: 5px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
         }
 
         .nav a:hover, .nav a.active {
-            color: var(--accent);
-            background: rgba(233, 69, 96, 0.1);
+            color: var(--text-primary);
+            background: var(--bg-secondary);
         }
 
         /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 24px;
         }
 
         /* Section */
         .section {
-            padding: 80px 0;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s ease;
+            padding: 100px 0;
         }
 
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
         }
 
         .section-title {
-            font-size: 2.5em;
-            color: var(--accent);
-            margin-bottom: 40px;
-            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
         }
 
-        /* Cards Grid */
-        .grid {
+        .section-desc {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Features Grid */
+        .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
         }
 
-        .card {
-            background: var(--card);
-            border-radius: 15px;
-            padding: 30px;
-            border: 1px solid var(--accent2);
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
         }
 
-        .card::before {
+        .feature-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent), var(--blue));
-            transform: scaleX(0);
-            transition: transform 0.3s;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(233, 69, 96, 0.2);
-            border-color: var(--accent);
+        .feature-card:hover {
+            border-color: var(--text-muted);
+            transform: translateY(-4px);
         }
 
-        .card:hover::before {
-            transform: scaleX(1);
+        .feature-card:hover::before {
+            opacity: 1;
         }
 
-        .card-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
         }
 
-        .card h3 {
-            color: var(--text);
-            margin-bottom: 15px;
-            font-size: 1.3em;
+        .feature-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 12px;
         }
 
-        .card p {
-            color: var(--muted);
-            font-size: 0.95em;
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
         }
 
-        /* Vulnerability Cards */
+        /* Vuln Grid */
         .vuln-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
         }
 
-        .vuln-card {
-            background: var(--card);
+        .vuln-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 25px;
-            border-left: 4px solid;
-            transition: all 0.3s;
+            padding: 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: all 0.2s;
         }
 
-        .vuln-card.critical { border-color: #d50000; }
-        .vuln-card.high { border-color: #ff6d00; }
-        .vuln-card.medium { border-color: #ffd600; }
-        .vuln-card.low { border-color: #00c853; }
-
-        .vuln-card:hover {
-            transform: translateX(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        .vuln-item:hover {
+            border-color: var(--text-muted);
         }
 
-        .severity {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            font-weight: bold;
-            margin-bottom: 10px;
+        .vuln-severity {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            white-space: nowrap;
         }
 
-        .severity.critical { background: #d50000; color: #fff; }
-        .severity.high { background: #ff6d00; color: #fff; }
-        .severity.medium { background: #ffd600; color: #000; }
+        .vuln-severity.critical { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .vuln-severity.high { background: rgba(249, 115, 22, 0.2); color: #f97316; }
+        .vuln-severity.medium { background: rgba(234, 179, 8, 0.2); color: #eab308; }
+
+        .vuln-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .vuln-info p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
 
         /* Code Block */
-        .code-block {
-            background: #0d0d0d;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.95em;
-            overflow-x: auto;
-            position: relative;
-        }
-
-        .code-block::before {
-            content: attr(data-title);
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: var(--accent);
-            color: #fff;
-            padding: 5px 15px;
-            border-radius: 0 10px 0 10px;
-            font-size: 0.8em;
-        }
-
-        .code-block code {
-            color: #00ff00;
-        }
-
-        .code-block .comment { color: #666; }
-        .code-block .string { color: #ff6b6b; }
-        .code-block .keyword { color: #00c853; }
-        .code-block .function { color: #2979ff; }
-
-        /* Terminal Animation */
-        .terminal {
-            background: #0d0d0d;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            font-family: 'Consolas', monospace;
-            min-height: 200px;
-            position: relative;
+        .code-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
             overflow: hidden;
+            margin: 24px 0;
         }
 
-        .terminal-header {
-            background: #1a1a1a;
-            padding: 10px 15px;
-            margin: -20px -20px 20px -20px;
-            border-radius: 10px 10px 0 0;
+        .code-header {
             display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-tabs {
+            display: flex;
+            gap: 4px;
+        }
+
+        .code-tab {
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .code-tab:hover { color: var(--text-primary); }
+        .code-tab.active { background: var(--bg-secondary); color: var(--text-primary); }
+
+        .code-copy {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .code-copy:hover { border-color: var(--text-muted); color: var(--text-primary); }
+
+        .code-content {
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+
+        .code-content .comment { color: #71717a; }
+        .code-content .cmd { color: #22c55e; }
+        .code-content .flag { color: #3b82f6; }
+        .code-content .string { color: #f43f5e; }
+
+        /* Terminal */
+        .terminal {
+            background: #0c0c0c;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 24px 0;
+        }
+
+        .terminal-bar {
+            display: flex;
+            align-items: center;
             gap: 8px;
+            padding: 14px 20px;
+            background: #1a1a1a;
+            border-bottom: 1px solid var(--border);
         }
 
         .terminal-dot {
@@ -327,202 +436,243 @@
             border-radius: 50%;
         }
 
-        .terminal-dot.red { background: #ff5f56; }
-        .terminal-dot.yellow { background: #ffbd2e; }
-        .terminal-dot.green { background: #27ca3f; }
+        .terminal-dot.r { background: #ff5f57; }
+        .terminal-dot.y { background: #febc2e; }
+        .terminal-dot.g { background: #28c840; }
 
-        .terminal-content {
-            color: #00ff00;
-            line-height: 1.8;
+        .terminal-title {
+            margin-left: 12px;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        .terminal-line {
-            opacity: 0;
-            animation: typeLine 0.5s ease forwards;
+        .terminal-body {
+            padding: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 2;
         }
 
-        .terminal-line:nth-child(1) { animation-delay: 0.5s; }
-        .terminal-line:nth-child(2) { animation-delay: 1s; }
-        .terminal-line:nth-child(3) { animation-delay: 1.5s; }
-        .terminal-line:nth-child(4) { animation-delay: 2s; }
-        .terminal-line:nth-child(5) { animation-delay: 2.5s; }
-        .terminal-line:nth-child(6) { animation-delay: 3s; }
+        .terminal-line { opacity: 0; animation: termLine 0.4s ease forwards; }
+        .terminal-line:nth-child(1) { animation-delay: 0.3s; }
+        .terminal-line:nth-child(2) { animation-delay: 0.6s; }
+        .terminal-line:nth-child(3) { animation-delay: 0.9s; }
+        .terminal-line:nth-child(4) { animation-delay: 1.2s; }
+        .terminal-line:nth-child(5) { animation-delay: 1.5s; }
+        .terminal-line:nth-child(6) { animation-delay: 1.8s; }
+        .terminal-line:nth-child(7) { animation-delay: 2.1s; }
+        .terminal-line:nth-child(8) { animation-delay: 2.4s; }
 
-        @keyframes typeLine {
-            from { opacity: 0; transform: translateX(-20px); }
+        @keyframes termLine {
+            from { opacity: 0; transform: translateX(-10px); }
             to { opacity: 1; transform: translateX(0); }
         }
+
+        .term-prompt { color: var(--green); }
+        .term-cmd { color: var(--text-primary); }
+        .term-flag { color: var(--blue); }
+        .term-success { color: var(--green); }
+        .term-info { color: var(--cyan); }
 
         .cursor {
             display: inline-block;
             width: 8px;
             height: 16px;
-            background: #00ff00;
-            animation: blink 1s infinite;
+            background: var(--green);
+            animation: blink 1s step-end infinite;
             vertical-align: middle;
         }
 
         @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
+            50% { opacity: 0; }
         }
 
-        /* Flow Diagram */
-        .flow-diagram {
+        /* Flow */
+        .flow {
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            gap: 16px;
             flex-wrap: wrap;
-            gap: 20px;
-            margin: 40px 0;
+            margin: 48px 0;
         }
 
         .flow-step {
-            background: var(--card);
-            border: 2px solid var(--accent2);
-            border-radius: 10px;
-            padding: 20px 30px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 28px;
             text-align: center;
-            position: relative;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
         .flow-step:hover {
             border-color: var(--accent);
-            transform: scale(1.05);
+            transform: translateY(-2px);
         }
 
-        .flow-step .icon {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
+        .flow-step .icon { font-size: 1.75rem; margin-bottom: 8px; }
+        .flow-step .label { font-size: 0.875rem; font-weight: 500; }
 
         .flow-arrow {
-            font-size: 2em;
+            color: var(--text-muted);
+            font-size: 1.25rem;
+        }
+
+        /* Table */
+        .table-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        tr:hover td { background: var(--bg-secondary); }
+
+        td code {
+            background: var(--bg-tertiary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
             color: var(--accent);
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        /* Features List */
-        .features-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .features-list li {
-            padding: 15px 0;
-            border-bottom: 1px solid var(--accent2);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.3s;
-        }
-
-        .features-list li:hover {
-            padding-left: 20px;
-            background: rgba(233, 69, 96, 0.05);
-        }
-
-        .features-list li::before {
-            content: '✓';
-            color: var(--green);
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        /* Stats */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
-
-        .stat {
-            text-align: center;
-            padding: 30px;
-            background: var(--card);
-            border-radius: 15px;
-            border: 1px solid var(--accent2);
-        }
-
-        .stat .number {
-            font-size: 3em;
-            color: var(--accent);
-            font-weight: bold;
-        }
-
-        .stat .label {
-            color: var(--muted);
-            margin-top: 10px;
         }
 
         /* Footer */
         .footer {
+            border-top: 1px solid var(--border);
+            padding: 48px 24px;
             text-align: center;
-            padding: 60px 20px;
-            border-top: 1px solid var(--accent2);
-            margin-top: 80px;
         }
 
         .footer p {
-            color: var(--muted);
+            color: var(--text-muted);
+            font-size: 0.875rem;
         }
 
         .footer a {
-            color: var(--accent);
+            color: var(--text-primary);
             text-decoration: none;
         }
 
+        .footer a:hover { color: var(--accent); }
+
         /* Responsive */
         @media (max-width: 768px) {
-            .header h1 { font-size: 2.5em; }
-            .grid { grid-template-columns: 1fr; }
-            .flow-diagram { flex-direction: column; }
+            .features-grid { grid-template-columns: 1fr; }
+            .vuln-grid { grid-template-columns: 1fr; }
+            .flow { flex-direction: column; }
             .flow-arrow { transform: rotate(90deg); }
         }
 
         /* Scroll animations */
-        .animate-on-scroll {
+        .reveal {
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.6s ease;
         }
 
-        .animate-on-scroll.visible {
+        .reveal.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Glow effect */
-        .glow {
-            animation: glow 2s ease-in-out infinite alternate;
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin: 64px 0;
         }
 
-        @keyframes glow {
-            from { box-shadow: 0 0 20px rgba(233, 69, 96, 0.3); }
-            to { box-shadow: 0 0 40px rgba(233, 69, 96, 0.6); }
+        .stat {
+            text-align: center;
+            padding: 32px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
-    <div class="bg-animation"></div>
-    <div class="particles" id="particles"></div>
 
-    <!-- Header -->
-    <header class="header">
-        <h1>Living Clone</h1>
-        <p class="tagline">Advanced Website Cloning & Security Testing Tool</p>
-        <span class="version">v2.0.0</span>
-    </header>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            v2.0.0 - Now with 12+ vulnerability types
+        </div>
+        <h1><span class="gradient">Living Clone</span></h1>
+        <p class="hero-subtitle">Advanced website cloning and comprehensive security testing tool. Clone, scan, and test for vulnerabilities with ease.</p>
+        <div class="hero-buttons">
+            <a href="#installation" class="btn btn-primary">Get Started →</a>
+            <a href="https://github.com/jojin1709/live-clone-tool" class="btn btn-secondary" target="_blank">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                GitHub
+            </a>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="container">
+        <div class="stats reveal">
+            <div class="stat">
+                <div class="stat-number">12+</div>
+                <div class="stat-label">Vulnerability Types</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">16</div>
+                <div class="stat-label">Core Modules</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Platforms</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">20+</div>
+                <div class="stat-label">Commands</div>
+            </div>
+        </div>
+    </div>
 
     <!-- Navigation -->
-    <nav class="nav">
+    <nav class="nav" id="nav">
         <div class="nav-inner">
             <a href="#features">Features</a>
             <a href="#vulnerabilities">Vulnerabilities</a>
@@ -534,440 +684,440 @@
         </div>
     </nav>
 
-    <div class="container">
-
-        <!-- Stats -->
-        <section class="section" id="stats">
-            <div class="stats">
-                <div class="stat">
-                    <div class="number">12+</div>
-                    <div class="label">Vulnerability Types</div>
-                </div>
-                <div class="stat">
-                    <div class="number">16</div>
-                    <div class="label">Modules</div>
-                </div>
-                <div class="stat">
-                    <div class="number">3</div>
-                    <div class="label">Platforms</div>
-                </div>
-                <div class="stat">
-                    <div class="number">20+</div>
-                    <div class="label">Commands</div>
-                </div>
+    <!-- Features -->
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-label">Features</div>
+                <h2 class="section-title">Everything you need</h2>
+                <p class="section-desc">Powerful features for comprehensive security testing and website cloning.</p>
             </div>
-        </section>
-
-        <!-- Features -->
-        <section class="section" id="features">
-            <h2 class="section-title">Features</h2>
-            <div class="grid">
-                <div class="card animate-on-scroll">
-                    <div class="card-icon">🕷️</div>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🕷️</div>
                     <h3>Deep Crawling</h3>
-                    <p>Crawl entire websites with configurable depth, page limits, and parallel processing. Resume interrupted crawls.</p>
+                    <p>Crawl entire websites with configurable depth, page limits, and parallel processing. Resume interrupted crawls anytime.</p>
                 </div>
-                <div class="card animate-on-scroll">
-                    <div class="card-icon">💉</div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">💉</div>
                     <h3>XSS Injection</h3>
-                    <p>Inject custom JavaScript payloads into cloned pages for testing. Multiple payload types included.</p>
+                    <p>Inject custom JavaScript payloads into cloned pages. Multiple built-in payloads and custom injection support.</p>
                 </div>
-                <div class="card animate-on-scroll">
-                    <div class="card-icon">🌐</div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🌐</div>
                     <h3>Browser Automation</h3>
-                    <p>Puppeteer-based cloning for SPAs (React, Vue, Angular). Headless Chrome, device emulation.</p>
+                    <p>Puppeteer-based cloning for SPAs. Headless Chrome, device emulation, and dynamic content handling.</p>
                 </div>
-                <div class="card animate-on-scroll">
-                    <div class="card-icon">🛡️</div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🛡️</div>
                     <h3>WAF Detection</h3>
-                    <p>Identify Cloudflare, Akamai, AWS WAF, and 15+ other WAFs protecting the target.</p>
+                    <p>Identify Cloudflare, Akamai, AWS WAF, and 15+ other WAFs protecting the target website.</p>
                 </div>
-                <div class="card animate-on-scroll">
-                    <div class="card-icon">🔍</div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🔍</div>
                     <h3>Tech Fingerprinting</h3>
-                    <p>Detect CMS, frameworks, server software, and technologies used by the target.</p>
+                    <p>Detect CMS, frameworks, server software, and technologies used by the target application.</p>
                 </div>
-                <div class="card animate-on-scroll">
-                    <div class="card-icon">📊</div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">📊</div>
                     <h3>Security Reports</h3>
-                    <p>Beautiful HTML, PDF, JSON, Markdown reports with multiple themes (Dark, Light, Hacker, Cyberpunk).</p>
+                    <p>Generate beautiful HTML, PDF, JSON, Markdown reports with multiple themes and detailed analysis.</p>
                 </div>
-                <div class="card animate-on-scroll">
-                    <div class="card-icon">🔄</div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🔄</div>
                     <h3>Session Management</h3>
-                    <p>Save and restore cookies, localStorage, sessionStorage. Export as JSON, Netscape, or cURL.</p>
+                    <p>Save and restore cookies, localStorage, sessionStorage. Export as JSON, Netscape, or cURL format.</p>
                 </div>
-                <div class="card animate-on-scroll">
-                    <div class="card-icon">🚀</div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🚀</div>
                     <h3>REST API</h3>
-                    <p>Programmatic access to all features. Integrate with your tools and workflows.</p>
+                    <p>Full REST API for programmatic access. Integrate with your tools and automation workflows.</p>
                 </div>
-                <div class="card animate-on-scroll">
-                    <div class="card-icon">📡</div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">📡</div>
                     <h3>Webhook Notifications</h3>
                     <p>Send alerts to Slack, Discord, or custom webhooks when changes are detected.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Vulnerabilities -->
-        <section class="section" id="vulnerabilities">
-            <h2 class="section-title">Vulnerability Detection</h2>
+    <!-- Vulnerabilities -->
+    <section class="section" id="vulnerabilities">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-label">Security</div>
+                <h2 class="section-title">12+ vulnerability types</h2>
+                <p class="section-desc">Comprehensive security scanning for all major vulnerability categories.</p>
+            </div>
             <div class="vuln-grid">
-                <div class="vuln-card critical animate-on-scroll">
-                    <span class="severity critical">CRITICAL</span>
-                    <h3>SQL Injection</h3>
-                    <p>Detect SQL injection patterns including UNION-based, error-based, and blind injection.</p>
+                <div class="vuln-item reveal">
+                    <span class="vuln-severity critical">Critical</span>
+                    <div class="vuln-info">
+                        <h4>SQL Injection</h4>
+                        <p>Detect SQL injection patterns including UNION-based, error-based, and blind injection.</p>
+                    </div>
                 </div>
-                <div class="vuln-card critical animate-on-scroll">
-                    <span class="severity critical">CRITICAL</span>
-                    <h3>Command Injection</h3>
-                    <p>Find OS command injection vulnerabilities in application inputs.</p>
+                <div class="vuln-item reveal">
+                    <span class="vuln-severity critical">Critical</span>
+                    <div class="vuln-info">
+                        <h4>Command Injection</h4>
+                        <p>Find OS command injection vulnerabilities in application inputs.</p>
+                    </div>
                 </div>
-                <div class="vuln-card critical animate-on-scroll">
-                    <span class="severity critical">CRITICAL</span>
-                    <h3>XXE (XML External Entity)</h3>
-                    <p>Detect XML parsing vulnerabilities that could lead to file disclosure or SSRF.</p>
+                <div class="vuln-item reveal">
+                    <span class="vuln-severity critical">Critical</span>
+                    <div class="vuln-info">
+                        <h4>XXE (XML External Entity)</h4>
+                        <p>Detect XML parsing vulnerabilities that could lead to file disclosure or SSRF.</p>
+                    </div>
                 </div>
-                <div class="vuln-card critical animate-on-scroll">
-                    <span class="severity critical">CRITICAL</span>
-                    <h3>SSRF (Server-Side Request Forgery)</h3>
-                    <p>Identify endpoints that could be abused to make requests to internal services.</p>
+                <div class="vuln-item reveal">
+                    <span class="vuln-severity critical">Critical</span>
+                    <div class="vuln-info">
+                        <h4>SSRF (Server-Side Request Forgery)</h4>
+                        <p>Identify endpoints that could be abused to make requests to internal services.</p>
+                    </div>
                 </div>
-                <div class="vuln-card critical animate-on-scroll">
-                    <span class="severity critical">CRITICAL</span>
-                    <h3>Path Traversal</h3>
-                    <p>Detect directory traversal vulnerabilities that could expose sensitive files.</p>
+                <div class="vuln-item reveal">
+                    <span class="vuln-severity critical">Critical</span>
+                    <div class="vuln-info">
+                        <h4>Path Traversal</h4>
+                        <p>Detect directory traversal vulnerabilities that could expose sensitive files.</p>
+                    </div>
                 </div>
-                <div class="vuln-card critical animate-on-scroll">
-                    <span class="severity critical">CRITICAL</span>
-                    <h3>Insecure Deserialization</h3>
-                    <p>Find unsafe deserialization patterns that could lead to remote code execution.</p>
+                <div class="vuln-item reveal">
+                    <span class="vuln-severity critical">Critical</span>
+                    <div class="vuln-info">
+                        <h4>Insecure Deserialization</h4>
+                        <p>Find unsafe deserialization patterns that could lead to remote code execution.</p>
+                    </div>
                 </div>
-                <div class="vuln-card critical animate-on-scroll">
-                    <span class="severity critical">CRITICAL</span>
-                    <h3>Local File Inclusion (LFI)</h3>
-                    <p>Detect file inclusion vulnerabilities that could expose system files.</p>
+                <div class="vuln-item reveal">
+                    <span class="vuln-severity critical">Critical</span>
+                    <div class="vuln-info">
+                        <h4>Local File Inclusion (LFI)</h4>
+                        <p>Detect file inclusion vulnerabilities that could expose system files.</p>
+                    </div>
                 </div>
-                <div class="vuln-card high animate-on-scroll">
-                    <span class="severity high">HIGH</span>
-                    <h3>XSS (Cross-Site Scripting)</h3>
-                    <p>Find reflected, stored, and DOM-based XSS vulnerabilities.</p>
+                <div class="vuln-item reveal">
+                    <span class="vuln-severity high">High</span>
+                    <div class="vuln-info">
+                        <h4>XSS (Cross-Site Scripting)</h4>
+                        <p>Find reflected, stored, and DOM-based XSS vulnerabilities.</p>
+                    </div>
                 </div>
-                <div class="vuln-card high animate-on-scroll">
-                    <span class="severity high">HIGH</span>
-                    <h3>CSRF (Cross-Site Request Forgery)</h3>
-                    <p>Detect missing CSRF protection on state-changing operations.</p>
+                <div class="vuln-item reveal">
+                    <span class="vuln-severity high">High</span>
+                    <div class="vuln-info">
+                        <h4>CSRF (Cross-Site Request Forgery)</h4>
+                        <p>Detect missing CSRF protection on state-changing operations.</p>
+                    </div>
                 </div>
-                <div class="vuln-card high animate-on-scroll">
-                    <span class="severity high">HIGH</span>
-                    <h3>Server-Side Includes (SSI)</h3>
-                    <p>Find SSI injection vulnerabilities in web applications.</p>
+                <div class="vuln-item reveal">
+                    <span class="vuln-severity high">High</span>
+                    <div class="vuln-info">
+                        <h4>Server-Side Includes (SSI)</h4>
+                        <p>Find SSI injection vulnerabilities in web applications.</p>
+                    </div>
                 </div>
-                <div class="vuln-card high animate-on-scroll">
-                    <span class="severity high">HIGH</span>
-                    <h3>Template Injection (SSTI)</h3>
-                    <p>Detect server-side template injection in various templating engines.</p>
+                <div class="vuln-item reveal">
+                    <span class="vuln-severity high">High</span>
+                    <div class="vuln-info">
+                        <h4>Template Injection (SSTI)</h4>
+                        <p>Detect server-side template injection in various templating engines.</p>
+                    </div>
                 </div>
-                <div class="vuln-card medium animate-on-scroll">
-                    <span class="severity medium">MEDIUM</span>
-                    <h3>Open Redirect</h3>
-                    <p>Find open redirect vulnerabilities that could be used for phishing attacks.</p>
+                <div class="vuln-item reveal">
+                    <span class="vuln-severity medium">Medium</span>
+                    <div class="vuln-info">
+                        <h4>Open Redirect</h4>
+                        <p>Find open redirect vulnerabilities that could be used for phishing attacks.</p>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Installation -->
-        <section class="section" id="installation">
-            <h2 class="section-title">Installation</h2>
-            
-            <div class="code-block" data-title="Windows">
-                <code>
+    <!-- Installation -->
+    <section class="section" id="installation">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-label">Setup</div>
+                <h2 class="section-title">Installation</h2>
+                <p class="section-desc">Get started in seconds with npm.</p>
+            </div>
+            <div class="code-section reveal">
+                <div class="code-header">
+                    <div class="code-tabs">
+                        <button class="code-tab active" onclick="showTab('win')">Windows</button>
+                        <button class="code-tab" onclick="showTab('linux')">Linux / Kali</button>
+                        <button class="code-tab" onclick="showTab('mac')">macOS</button>
+                    </div>
+                    <button class="code-copy" onclick="copyCode()">Copy</button>
+                </div>
+                <div class="code-content" id="code-win">
 <span class="comment"># Clone the repository</span>
-git clone https://github.com/jojin1709/live-clone-tool.git
+<span class="cmd">git</span> clone https://github.com/jojin1709/live-clone-tool.git
 
 <span class="comment"># Navigate to directory</span>
-cd live-clone-tool
+<span class="cmd">cd</span> live-clone-tool
 
 <span class="comment"># Install dependencies</span>
-npm install
+<span class="cmd">npm</span> install
 
 <span class="comment"># Run the tool</span>
-node clone.js --help
-                </code>
-            </div>
-
-            <div class="code-block" data-title="Linux (Kali/Ubuntu)">
-                <code>
+<span class="cmd">node</span> clone.js <span class="flag">--help</span>
+                </div>
+                <div class="code-content" id="code-linux" style="display:none">
 <span class="comment"># Clone the repository</span>
-git clone https://github.com/jojin1709/live-clone-tool.git
+<span class="cmd">git</span> clone https://github.com/jojin1709/live-clone-tool.git
 
 <span class="comment"># Navigate to directory</span>
-cd live-clone-tool
+<span class="cmd">cd</span> live-clone-tool
 
 <span class="comment"># Make executable</span>
-chmod +x clone.js
+<span class="cmd">chmod</span> +x clone.js
 
 <span class="comment"># Install dependencies</span>
-npm install
+<span class="cmd">npm</span> install
 
 <span class="comment"># Run the tool</span>
-./clone.js --help
-                </code>
-            </div>
-
-            <h3 style="margin-top: 40px; margin-bottom: 20px;">Prerequisites</h3>
-            <ul class="features-list">
-                <li>Node.js 16 or higher</li>
-                <li>Git (optional)</li>
-                <li>Puppeteer (optional - for browser automation)</li>
-            </ul>
-        </section>
-
-        <!-- Usage -->
-        <section class="section" id="usage">
-            <h2 class="section-title">Usage</h2>
-
-            <h3>Basic Cloning</h3>
-            <div class="code-block" data-title="Command">
-                <code>
-<span class="comment"># Clone a website</span>
-node clone.js clone https://example.com
-
-<span class="comment"># Clone with custom injection</span>
-node clone.js clone https://example.com -j "alert('XSS')"
-
-<span class="comment"># Clone with pre-built payload</span>
-node clone.js clone https://example.js -f payloads/xss-default.js
-
-<span class="comment"># Deep crawl</span>
-node clone.js clone https://example.com -d 5 --max-pages 500
-                </code>
-            </div>
-
-            <h3 style="margin-top: 40px;">Security Scanning</h3>
-            <div class="code-block" data-title="Command">
-                <code>
-<span class="comment"># Run security scan</span>
-node clone.js security https://example.com
-
-<span class="comment"># Save report</span>
-node clone.js security https://example.js --output report.html
-                </code>
-            </div>
-
-            <h3 style="margin-top: 40px;">Browser Automation (SPA)</h3>
-            <div class="code-block" data-title="Command">
-                <code>
-<span class="comment"># Clone React/Vue/Angular app</span>
-node clone.js browser https://spa.example.com --wait 5000 --scroll
-
-<span class="comment"># With device emulation</span>
-node clone.js browser https://example.com --emulate "iPhone 12"
-                </code>
-            </div>
-
-            <h3 style="margin-top: 40px;">Batch Operations</h3>
-            <div class="code-block" data-title="Command">
-                <code>
-<span class="comment"># Create URL file</span>
-echo "https://example.com
-https://test.com
-https://demo.com" > urls.txt
-
-<span class="comment"># Batch clone</span>
-node clone.js batch urls.txt -c 5 --delay 2000
-                </code>
-            </div>
-
-            <h3 style="margin-top: 40px;">Web Dashboard</h3>
-            <div class="code-block" data-title="Command">
-                <code>
-<span class="comment"># Start dashboard</span>
-node clone.js dashboard -p 9090
-
-<span class="comment"># Open http://localhost:9090</span>
-                </code>
-            </div>
-        </section>
-
-        <!-- Demo -->
-        <section class="section" id="demo">
-            <h2 class="section-title">Live Demo</h2>
-            
-            <div class="terminal glow">
-                <div class="terminal-header">
-                    <div class="terminal-dot red"></div>
-                    <div class="terminal-dot yellow"></div>
-                    <div class="terminal-dot green"></div>
+<span class="cmd">./</span>clone.js <span class="flag">--help</span>
                 </div>
-                <div class="terminal-content">
-                    <div class="terminal-line">$ <span class="keyword">node</span> clone.js security https://example.com</div>
-                    <div class="terminal-line"></div>
-                    <div class="terminal-line">  Security Scanner</div>
-                    <div class="terminal-line"></div>
-                    <div class="terminal-line">  WAF: <span style="color: #ffd600;">Cloudflare</span></div>
-                    <div class="terminal-line">  Technologies: <span style="color: #2979ff;">Nginx, jQuery</span></div>
-                    <div class="terminal-line">  Vulnerabilities: <span style="color: #ff6d00;">3</span></div>
-                    <div class="terminal-line">  Score: <span style="color: #00c853;">75/100</span></div>
-                    <div class="terminal-line"></div>
-                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> Security headers analysis complete</div>
-                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> WAF detection complete</div>
-                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> Vulnerability scan complete</div>
-                    <div class="terminal-line"></div>
-                    <div class="terminal-line">$ <span class="cursor"></span></div>
+                <div class="code-content" id="code-mac" style="display:none">
+<span class="comment"># Clone the repository</span>
+<span class="cmd">git</span> clone https://github.com/jojin1709/live-clone-tool.git
+
+<span class="comment"># Navigate to directory</span>
+<span class="cmd">cd</span> live-clone-tool
+
+<span class="comment"># Install dependencies</span>
+<span class="cmd">npm</span> install
+
+<span class="comment"># Run the tool</span>
+<span class="cmd">node</span> clone.js <span class="flag">--help</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usage -->
+    <section class="section" id="usage">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-label">Usage</div>
+                <h2 class="section-title">Quick start</h2>
+                <p class="section-desc">Common commands to get you started.</p>
+            </div>
+
+            <div class="code-section reveal">
+                <div class="code-header">
+                    <span style="font-size: 0.875rem; color: var(--text-secondary);">Clone a website</span>
+                </div>
+                <div class="code-content">
+<span class="cmd">node</span> clone.js clone <span class="string">https://example.com</span>
                 </div>
             </div>
 
-            <div class="terminal glow" style="margin-top: 30px;">
-                <div class="terminal-header">
-                    <div class="terminal-dot red"></div>
-                    <div class="terminal-dot yellow"></div>
-                    <div class="terminal-dot green"></div>
+            <div class="code-section reveal">
+                <div class="code-header">
+                    <span style="font-size: 0.875rem; color: var(--text-secondary);">Security scan</span>
                 </div>
-                <div class="terminal-content">
-                    <div class="terminal-line">$ <span class="keyword">node</span> clone.js clone https://example.com -o my-clone --export-html --export-pdf</div>
-                    <div class="terminal-line"></div>
-                    <div class="terminal-line">  Living Clone v2.0 - Advanced Security Testing Tool</div>
-                    <div class="terminal-line"></div>
-                    <div class="terminal-line">  Cloning: https://example.com</div>
-                    <div class="terminal-line">  Output: D:\living-clone\my-clone</div>
-                    <div class="terminal-line">  Depth: 1</div>
-                    <div class="terminal-line"></div>
-                    <div class="terminal-line">  Starting crawl...</div>
-                    <div class="terminal-line"></div>
-                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> Crawl completed! Found 1 pages</div>
-                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> Site cloned in 0.35s</div>
-                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> HTML report exported</div>
-                    <div class="terminal-line">  <span style="color: #00c853;">✓</span> PDF exported</div>
-                    <div class="terminal-line"></div>
-                    <div class="terminal-line">  Server running at: <span style="color: #2979ff;">http://localhost:8080</span></div>
-                    <div class="terminal-line">$ <span class="cursor"></span></div>
+                <div class="code-content">
+<span class="cmd">node</span> clone.js security <span class="string">https://example.com</span>
                 </div>
             </div>
-        </section>
 
-        <!-- How It Works -->
-        <section class="section" id="how-it-works">
-            <h2 class="section-title">How It Works</h2>
+            <div class="code-section reveal">
+                <div class="code-header">
+                    <span style="font-size: 0.875rem; color: var(--text-secondary);">Deep crawl with export</span>
+                </div>
+                <div class="code-content">
+<span class="cmd">node</span> clone.js clone <span class="string">https://example.com</span> <span class="flag">-d 5</span> <span class="flag">--max-pages 500</span> <span class="flag">--export-html</span>
+                </div>
+            </div>
 
-            <div class="flow-diagram">
+            <div class="code-section reveal">
+                <div class="code-header">
+                    <span style="font-size: 0.875rem; color: var(--text-secondary);">Clone with authentication</span>
+                </div>
+                <div class="code-content">
+<span class="cmd">node</span> clone.js clone <span class="string">https://app.example.com</span> <span class="flag">--basic-auth</span> admin:password123
+                </div>
+            </div>
+
+            <div class="code-section reveal">
+                <div class="code-header">
+                    <span style="font-size: 0.875rem; color: var(--text-secondary);">Start web dashboard</span>
+                </div>
+                <div class="code-content">
+<span class="cmd">node</span> clone.js dashboard <span class="flag">-p 9090</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo -->
+    <section class="section" id="demo">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-label">Demo</div>
+                <h2 class="section-title">See it in action</h2>
+                <p class="section-desc">Watch the tool run a security scan.</p>
+            </div>
+            <div class="terminal reveal">
+                <div class="terminal-bar">
+                    <div class="terminal-dot r"></div>
+                    <div class="terminal-dot y"></div>
+                    <div class="terminal-dot g"></div>
+                    <span class="terminal-title">living-clone ~ security scan</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-line"><span class="term-prompt">$</span> <span class="term-cmd">node clone.js security https://example.com</span></div>
+                    <div class="terminal-line"></div>
+                    <div class="terminal-line"><span class="term-info">  Security Scanner</span></div>
+                    <div class="terminal-line"></div>
+                    <div class="terminal-line">  WAF: <span style="color: #eab308;">Cloudflare</span></div>
+                    <div class="terminal-line">  Technologies: <span style="color: #3b82f6;">Nginx, jQuery</span></div>
+                    <div class="terminal-line">  Vulnerabilities: <span style="color: #f97316;">3 found</span></div>
+                    <div class="terminal-line">  Score: <span class="term-success">75/100</span></div>
+                    <div class="terminal-line"></div>
+                    <div class="terminal-line"><span class="term-success">  ✓</span> Security headers analyzed</div>
+                    <div class="terminal-line"><span class="term-success">  ✓</span> WAF detection complete</div>
+                    <div class="terminal-line"><span class="term-success">  ✓</span> Vulnerability scan complete</div>
+                    <div class="terminal-line"></div>
+                    <div class="terminal-line"><span class="term-prompt">$</span> <span class="cursor"></span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section" id="how-it-works">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-label">Architecture</div>
+                <h2 class="section-title">How it works</h2>
+                <p class="section-desc">A simple 6-step process from target to report.</p>
+            </div>
+            <div class="flow reveal">
                 <div class="flow-step">
                     <div class="icon">🎯</div>
-                    <div>Target URL</div>
+                    <div class="label">Target</div>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-step">
                     <div class="icon">🕷️</div>
-                    <div>Crawler</div>
+                    <div class="label">Crawl</div>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-step">
                     <div class="icon">🔍</div>
-                    <div>Analyzer</div>
+                    <div class="label">Analyze</div>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-step">
                     <div class="icon">🛡️</div>
-                    <div>Security Scan</div>
+                    <div class="label">Scan</div>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-step">
                     <div class="icon">💉</div>
-                    <div>Injection</div>
+                    <div class="label">Inject</div>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-step">
                     <div class="icon">📊</div>
-                    <div>Report</div>
+                    <div class="label">Report</div>
                 </div>
             </div>
-
-            <h3 style="margin-top: 60px;">Architecture</h3>
-            <div class="grid">
-                <div class="card animate-on-scroll">
-                    <h3>1. Pre-Reconnaissance</h3>
+            <div class="features-grid" style="margin-top: 48px;">
+                <div class="feature-card reveal">
+                    <div class="feature-icon">1</div>
+                    <h3>Pre-Reconnaissance</h3>
                     <p>Analyzes target, detects WAF, identifies technologies and frameworks.</p>
                 </div>
-                <div class="card animate-on-scroll">
-                    <h3>2. Crawling</h3>
-                    <p>Deep crawls the website with configurable depth, parallel processing, and caching.</p>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">2</div>
+                    <h3>Crawling</h3>
+                    <p>Deep crawls the website with configurable depth and parallel processing.</p>
                 </div>
-                <div class="card animate-on-scroll">
-                    <h3>3. Security Analysis</h3>
-                    <p>Scans for 12+ vulnerability types including XSS, SQLi, CSRF, XXE, SSRF, and more.</p>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">3</div>
+                    <h3>Security Analysis</h3>
+                    <p>Scans for 12+ vulnerability types including XSS, SQLi, CSRF, XXE, SSRF.</p>
                 </div>
-                <div class="card animate-on-scroll">
-                    <h3>4. Injection</h3>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">4</div>
+                    <h3>Injection</h3>
                     <p>Injects custom JavaScript payloads into cloned pages for testing.</p>
                 </div>
-                <div class="card animate-on-scroll">
-                    <h3>5. Reporting</h3>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">5</div>
+                    <h3>Reporting</h3>
                     <p>Generates beautiful reports in HTML, PDF, JSON, or Markdown format.</p>
                 </div>
-                <div class="card animate-on-scroll">
-                    <h3>6. Serving</h3>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">6</div>
+                    <h3>Serving</h3>
                     <p>Hosts the cloned site locally for safe testing and analysis.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Commands -->
-        <section class="section" id="commands">
-            <h2 class="section-title">All Commands</h2>
-            <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <!-- Commands -->
+    <section class="section" id="commands">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-label">Reference</div>
+                <h2 class="section-title">All commands</h2>
+                <p class="section-desc">Complete list of available commands.</p>
+            </div>
+            <div class="table-wrapper reveal">
+                <table>
                     <thead>
-                        <tr style="background: var(--accent2);">
-                            <th style="padding: 15px; text-align: left; color: var(--accent);">Command</th>
-                            <th style="padding: 15px; text-align: left; color: var(--accent);">Description</th>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>clone &lt;url&gt;</code></td><td style="padding: 12px;">Clone a website with injection</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>security &lt;url&gt;</code></td><td style="padding: 12px;">Run security scan</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>browser &lt;url&gt;</code></td><td style="padding: 12px;">Clone with Puppeteer (SPA support)</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>batch &lt;file&gt;</code></td><td style="padding: 12px;">Batch clone from URL file</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>watch &lt;urls&gt;</code></td><td style="padding: 12px;">Monitor URLs for changes</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>compare &lt;dir1&gt; &lt;dir2&gt;</code></td><td style="padding: 12px;">Compare two clones</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>serve [folder]</code></td><td style="padding: 12px;">Serve a cloned site</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>session</code></td><td style="padding: 12px;">Manage sessions</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>export &lt;folder&gt;</code></td><td style="padding: 12px;">Export clone data</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>api</code></td><td style="padding: 12px;">Start REST API server</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>dashboard</code></td><td style="padding: 12px;">Start web dashboard</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>config</code></td><td style="padding: 12px;">Manage configuration</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>payloads</code></td><td style="padding: 12px;">List available payloads</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>themes</code></td><td style="padding: 12px;">List report themes</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>har</code></td><td style="padding: 12px;">Export/Import HAR files</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>webhook</code></td><td style="padding: 12px;">Send notifications</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>integrations</code></td><td style="padding: 12px;">Manage integrations</td></tr>
-                        <tr style="border-bottom: 1px solid var(--accent2);"><td style="padding: 12px;"><code>crawl-state</code></td><td style="padding: 12px;">Manage crawl state for resume</td></tr>
+                        <tr><td><code>clone &lt;url&gt;</code></td><td>Clone a website with injection</td></tr>
+                        <tr><td><code>security &lt;url&gt;</code></td><td>Run security scan</td></tr>
+                        <tr><td><code>browser &lt;url&gt;</code></td><td>Clone with Puppeteer (SPA support)</td></tr>
+                        <tr><td><code>batch &lt;file&gt;</code></td><td>Batch clone from URL file</td></tr>
+                        <tr><td><code>watch &lt;urls&gt;</code></td><td>Monitor URLs for changes</td></tr>
+                        <tr><td><code>compare &lt;dir1&gt; &lt;dir2&gt;</code></td><td>Compare two clones</td></tr>
+                        <tr><td><code>serve [folder]</code></td><td>Serve a cloned site</td></tr>
+                        <tr><td><code>session</code></td><td>Manage sessions</td></tr>
+                        <tr><td><code>export &lt;folder&gt;</code></td><td>Export clone data</td></tr>
+                        <tr><td><code>api</code></td><td>Start REST API server</td></tr>
+                        <tr><td><code>dashboard</code></td><td>Start web dashboard</td></tr>
+                        <tr><td><code>config</code></td><td>Manage configuration</td></tr>
+                        <tr><td><code>payloads</code></td><td>List available payloads</td></tr>
+                        <tr><td><code>themes</code></td><td>List report themes</td></tr>
+                        <tr><td><code>har</code></td><td>Export/Import HAR files</td></tr>
+                        <tr><td><code>webhook</code></td><td>Send notifications</td></tr>
+                        <tr><td><code>integrations</code></td><td>Manage integrations</td></tr>
+                        <tr><td><code>crawl-state</code></td><td>Manage crawl state for resume</td></tr>
                     </tbody>
                 </table>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <p>Developed by <a href="https://github.com/jojin1709">JOJIN JOHN</a></p>
-            <p style="margin-top: 10px;">GitHub: <a href="https://github.com/jojin1709/live-clone-tool">github.com/jojin1709/live-clone-tool</a></p>
-            <p style="margin-top: 20px; color: var(--accent);">For educational and authorized security testing only.</p>
-        </footer>
-    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Built by <a href="https://github.com/jojin1709">JOJIN JOHN</a></p>
+            <p style="margin-top: 8px;">For educational and authorized security testing only.</p>
+        </div>
+    </footer>
 
     <script>
-        // Create floating particles
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 20 + 's';
-            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-            particlesContainer.appendChild(particle);
-        }
-
-        // Scroll animations
+        // Scroll reveal
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -976,64 +1126,68 @@ node clone.js dashboard -p 9090
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.section, .animate-on-scroll').forEach(el => {
-            observer.observe(el);
-        });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Active nav link
+        // Active nav
         const sections = document.querySelectorAll('section');
         const navLinks = document.querySelectorAll('.nav a');
 
         window.addEventListener('scroll', () => {
             let current = '';
             sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
+                const top = section.offsetTop - 100;
+                if (pageYOffset >= top) current = section.getAttribute('id');
             });
-
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + current) {
-                    link.classList.add('active');
-                }
+                if (link.getAttribute('href') === '#' + current) link.classList.add('active');
             });
         });
+
+        // Code tabs
+        function showTab(tab) {
+            document.querySelectorAll('.code-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.code-tab').forEach(el => el.classList.remove('active'));
+            document.getElementById('code-' + tab).style.display = 'block';
+            event.target.classList.add('active');
+        }
+
+        // Copy code
+        function copyCode() {
+            const active = document.querySelector('.code-content[style*="block"], .code-content:not([style*="none"])');
+            navigator.clipboard.writeText(active.textContent.trim());
+            const btn = document.querySelector('.code-copy');
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = 'Copy', 2000);
+        }
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
             });
         });
 
         // Counter animation
-        const counters = document.querySelectorAll('.number');
-        const animateCounter = (counter) => {
-            const target = parseInt(counter.textContent);
-            const increment = target / 50;
-            let current = 0;
-            const updateCounter = () => {
-                if (current < target) {
-                    counter.textContent = current + '+';
-                    current += increment;
-                    setTimeout(updateCounter, 30);
-                } else {
-                    counter.textContent = target + '+';
-                }
-            };
-            updateCounter();
-        };
-
+        const counters = document.querySelectorAll('.stat-number');
         const counterObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    animateCounter(entry.target);
-                    counterObserver.unobserve(entry.target);
+                    const el = entry.target;
+                    const target = parseInt(el.textContent);
+                    let current = 0;
+                    const increment = target / 30;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            el.textContent = target + '+';
+                            clearInterval(timer);
+                        } else {
+                            el.textContent = Math.floor(current) + '+';
+                        }
+                    }, 30);
+                    counterObserver.unobserve(el);
                 }
             });
         }, { threshold: 0.5 });
