@@ -1,0 +1,41 @@
+{
+  "depth": 1,
+  "maxPages": 100,
+  "rateLimit": 0,
+  "timeout": 30000,
+  "retries": 3,
+  "saveImages": true,
+  "saveCss": true,
+  "saveJs": true,
+  "followExternal": false,
+  "proxy": null,
+  "auth": {
+    "type": null,
+    "username": null,
+    "password": null,
+    "token": null,
+    "tokenHeader": "Authorization"
+  },
+  "headers": {},
+  "userAgent": null,
+  "security": {
+    "rotateUserAgent": false,
+    "antiFingerprint": false,
+    "randomizeHeaders": false
+  },
+  "injection": {
+    "code": null,
+    "file": null,
+    "position": "body"
+  },
+  "server": {
+    "enabled": false,
+    "port": 8080,
+    "host": "localhost"
+  },
+  "logging": {
+    "level": "info",
+    "file": null,
+    "console": true
+  }
+}

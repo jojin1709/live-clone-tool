@@ -1,0 +1,13 @@
+node_modules/
+.env
+*.log
+.DS_Store
+Thumbs.db
+.crawl-state.json
+.crawl-cache/
+cloned-site/
+test-output/
+batch-output/
+browser-clone/
+*.zip
+*.pdf
