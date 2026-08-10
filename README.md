@@ -2,7 +2,7 @@
 
 # Living Clone
 
-**Advanced Website Cloning & XSS Testing Tool**
+**Advanced Website Cloning & Security Testing Tool**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-16%2B-green.svg)](https://nodejs.org/)
@@ -10,7 +10,7 @@
 
 ---
 
-**Living Clone** is a powerful, cross-platform CLI tool for cloning websites and testing for XSS vulnerabilities. It supports deep crawling, security scanning, browser automation for SPAs, and extensive customization.
+**Living Clone** is a powerful, cross-platform CLI tool for cloning websites and comprehensive security testing. It supports deep crawling, vulnerability scanning (XSS, SQLi, CSRF, XXE, SSRF, LFI, Command Injection, Path Traversal, and more), browser automation for SPAs, and extensive customization.
 
 **This tool is for educational and authorized security testing purposes only.**
 
@@ -50,7 +50,7 @@
 ### Security Testing
 - **WAF Detection** - Identify Cloudflare, Akamai, AWS WAF, and 15+ other WAFs
 - **Technology Fingerprinting** - Detect CMS, frameworks, server software
-- **Vulnerability Scanning** - Find XSS, SQLi, LFI, SSI, template injection patterns
+- **Vulnerability Scanning** - Find XSS, SQLi, CSRF, XXE, SSRF, LFI, Command Injection, Path Traversal, Insecure Deserialization, and more
 - **Header Analysis** - Check security headers (HSTS, CSP, X-Frame-Options, etc.)
 - **SSL Analysis** - Certificate validation and expiry checking
 - **Cookie Security** - Analyze HttpOnly, Secure, SameSite flags

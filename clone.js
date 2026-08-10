@@ -160,7 +160,7 @@ async function fetchPage(targetUrl, cfg) {
   return { url: targetUrl, status: response.status, headers: response.headers, data: response.data, size: Buffer.byteLength(response.data, 'utf8') };
 }
 
-program.name('living-clone').description('Advanced website cloning and XSS testing tool').version('2.0.0');
+program.name('living-clone').description('Advanced website cloning and comprehensive security testing tool - XSS, SQLi, CSRF, XXE, SSRF, LFI, Command Injection, Path Traversal, and more').version('2.0.0');
 
 // ==================== CLONE COMMAND ====================
 program.command('clone').argument('<targetUrl>', 'URL to clone')

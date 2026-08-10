@@ -1,7 +1,7 @@
 {
   "name": "living-clone",
   "version": "2.0.0",
-  "description": "Advanced website cloning and XSS testing tool with deep crawling, security scanning, and automation",
+  "description": "Advanced website cloning and comprehensive security testing tool - XSS, SQLi, CSRF, XXE, SSRF, LFI, Command Injection, Path Traversal, and more",
   "main": "clone.js",
   "bin": {
     "living-clone": "./clone.js",
@@ -18,6 +18,13 @@
   "keywords": [
     "security",
     "xss",
+    "sqli",
+    "csrf",
+    "xxe",
+    "ssrf",
+    "lfi",
+    "command-injection",
+    "path-traversal",
     "pentesting",
     "cloning",
     "web-scanner",
