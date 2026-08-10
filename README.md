@@ -99,10 +99,10 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/jojinjohn/living-clone.git
+git clone https://github.com/jojin1709/live-clone-tool.git
 
 # Navigate to directory
-cd living-clone
+cd live-clone-tool
 
 # Install dependencies
 npm install
@@ -414,7 +414,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Developed by JOJIN JOHN**
 
-[![GitHub](https://img.shields.io/badge/GitHub-jojinjohn-181717?style=for-the-badge&logo=github)](https://github.com/jojinjohn)
+[![GitHub](https://img.shields.io/badge/GitHub-jojin1709-181717?style=for-the-badge&logo=github)](https://github.com/jojin1709)
 
 </div>
 
